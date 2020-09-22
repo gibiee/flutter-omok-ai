@@ -31,9 +31,11 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height -
-        CupertinoNavigationBar().preferredSize.height;
+        CupertinoNavigationBar().preferredSize.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
 
-    print([_width, _height]);
+    // print([_width, _height]);
 
     return WillPopScope(
       onWillPop: () {
@@ -50,7 +52,7 @@ class HomeState extends State<Home> {
               Container(
                 width: _width * 0.9,
                 height: _height * 0.1,
-                color: Colors.orange,
+                // color: Colors.orange,
                 alignment: Alignment.centerRight,
                 child: SizedBox(
                   width: _width * 0.25,
@@ -69,22 +71,22 @@ class HomeState extends State<Home> {
                 ),
               ),
               Container(
-                width: _width,
+                width: _width * 0.9,
                 height: _height * 0.8,
                 alignment: Alignment.center,
-                //color: Colors.green,
+                // color: Colors.green,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('images/board.png'),
                     fit: BoxFit.contain,
                   ),
                 ),
-                child: board_btns(_width, _height * 0.8),
+                child: board_btns(_width * 0.9, _height * 0.8),
               ),
               Container(
                 width: _width,
                 height: _height * 0.1,
-                color: Colors.red,
+                // color: Colors.red,
               )
             ],
           ),
@@ -108,14 +110,16 @@ class HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 for (int j = 0; j < 9; j++)
-                  FlatButton(
-                    minWidth: _size * 0.07,
+                  SizedBox(
+                    width: _size * 0.07,
                     height: _size * 0.07,
-                    onPressed: () {
-                      print([i, j]);
-                    },
-                    child: null,
-                    color: Colors.blue,
+                    child: FlatButton(
+                      onPressed: () {
+                        print([i, j]);
+                      },
+                      child: null,
+                      color: Colors.blue,
+                    ),
                   ),
               ],
             ),
