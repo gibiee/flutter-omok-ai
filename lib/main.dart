@@ -188,75 +188,78 @@ class HomeState extends State<Home> {
                           child: FlatButton(
                             onPressed: () async {
                               if (gameStart) {
-                                if (checkList(black_moved, [i, j]) ||
-                                    checkList(white_moved, [i, j]) ||
-                                    (player_is_black &&
-                                        checkList(forbidden, [i, j]))) {
-                                  scaffoldKey.currentState.showSnackBar(
-                                      SnackBar(
-                                          content: Text('그곳에는 돌을 놓을 수 없습니다')));
-                                } else if (wait == false) {
-                                  wait = true;
-                                  // 플레이어가 돌을 둔 것을 렌더링
-                                  setState(() {
-                                    if (player_is_black) {
-                                      black_moved.add([i, j]);
-                                    } else {
-                                      white_moved.add([i, j]);
-                                    }
-                                    prev_moved = [i, j];
-                                  });
-
-                                  // 플레이어가 돌을 둔 위치를 서버로 보냅니다.
-                                  var response = await http.post(
-                                    url + '/player_moved',
-                                    headers: {
-                                      "Content-Type":
-                                          "application/json; charset=UTF-8"
-                                    },
-                                    body: jsonEncode(
-                                      {
-                                        'player_moved': [i, j]
-                                      },
-                                    ),
-                                  );
-
-                                  // print(response.body);
-
-                                  // 서버로부터 AI가 데이터를 받습니다.
-                                  // 1. AI가 둘 위치
-                                  // 2. 금수 자리
-                                  // 3. 게임이 끝났는지 여부
-                                  var data = json.decode(response.body)
-                                      as Map<String, dynamic>;
-
-                                  // print(data);
-
-                                  // AI가 돌을 둔 것을 렌더링
-                                  setState(() {
-                                    if (data['ai_moved'] != null) {
+                                if (wait == false) {
+                                  if (checkList(black_moved, [i, j]) ||
+                                      checkList(white_moved, [i, j]) ||
+                                      (player_is_black &&
+                                          checkList(forbidden, [i, j]))) {
+                                    scaffoldKey.currentState.showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text('그곳에는 돌을 놓을 수 없습니다')));
+                                  } else {
+                                    wait = true;
+                                    // 플레이어가 돌을 둔 것을 렌더링
+                                    setState(() {
                                       if (player_is_black) {
-                                        white_moved.add(data['ai_moved']);
+                                        black_moved.add([i, j]);
                                       } else {
-                                        black_moved.add(data['ai_moved']);
+                                        white_moved.add([i, j]);
                                       }
-                                      prev_moved = data['ai_moved'];
-                                    }
-                                    forbidden = data['forbidden'];
-                                  });
+                                      prev_moved = [i, j];
+                                    });
 
-                                  if (data['message'] == 1) {
-                                    scaffoldKey.currentState.showSnackBar(
-                                        SnackBar(
-                                            content: Text('플레이어가 이겼습니다!')));
-                                    gameStart = false;
-                                  } else if (data['message'] == 2) {
-                                    scaffoldKey.currentState.showSnackBar(
-                                        SnackBar(
-                                            content: Text('인공지능이 이겼습니다!')));
-                                    gameStart = false;
+                                    // 플레이어가 돌을 둔 위치를 서버로 보냅니다.
+                                    var response = await http.post(
+                                      url + '/player_moved',
+                                      headers: {
+                                        "Content-Type":
+                                            "application/json; charset=UTF-8"
+                                      },
+                                      body: jsonEncode(
+                                        {
+                                          'player_moved': [i, j]
+                                        },
+                                      ),
+                                    );
+
+                                    // print(response.body);
+
+                                    // 서버로부터 AI가 데이터를 받습니다.
+                                    // 1. AI가 둘 위치
+                                    // 2. 금수 자리
+                                    // 3. 게임이 끝났는지 여부
+                                    var data = json.decode(response.body)
+                                        as Map<String, dynamic>;
+
+                                    // print(data);
+
+                                    // AI가 돌을 둔 것을 렌더링
+                                    setState(() {
+                                      if (data['ai_moved'] != null) {
+                                        if (player_is_black) {
+                                          white_moved.add(data['ai_moved']);
+                                        } else {
+                                          black_moved.add(data['ai_moved']);
+                                        }
+                                        prev_moved = data['ai_moved'];
+                                      }
+                                      forbidden = data['forbidden'];
+                                    });
+
+                                    if (data['message'] == 1) {
+                                      scaffoldKey.currentState.showSnackBar(
+                                          SnackBar(
+                                              content: Text('플레이어가 이겼습니다!')));
+                                      gameStart = false;
+                                    } else if (data['message'] == 2) {
+                                      scaffoldKey.currentState.showSnackBar(
+                                          SnackBar(
+                                              content: Text('인공지능이 이겼습니다!')));
+                                      gameStart = false;
+                                    }
+                                    wait = false;
                                   }
-                                  wait = false;
                                 }
                               } else {
                                 scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -374,6 +377,7 @@ class HomeState extends State<Home> {
                     Navigator.pop(context);
                     hard = _selectedIndex;
                     player_is_black = _attackFirst;
+                    wait = player_is_black ? false : true;
                     gameStart = true;
 
                     black_moved = [];
@@ -399,6 +403,7 @@ class HomeState extends State<Home> {
                       }
                       forbidden = data['forbidden'];
                       prev_moved = data['ai_moved'];
+                      wait = false;
                     }
                     super.setState(() {});
                   },
