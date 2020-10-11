@@ -14,7 +14,7 @@ List<dynamic> prev_moved = [-1, -1];
 int hard = 2;
 bool player_is_black = true;
 
-String url = 'http://3b63c49cdcc4.ngrok.io';
+String url = 'http://omok-ai-9x9.df.r.appspot.com';
 
 void main() => runApp(MyApp());
 
@@ -219,6 +219,8 @@ class HomeState extends State<Home> {
                                     ),
                                   );
 
+                                  print(response.body);
+
                                   // 서버로부터 AI가 데이터를 받습니다.
                                   // 1. AI가 둘 위치
                                   // 2. 금수 자리
@@ -327,12 +329,14 @@ class HomeState extends State<Home> {
                         Expanded(
                           child: CupertinoSegmentedControl(
                             children: {
-                              0: Text('1'), // 5000
-                              1: Text('2'), // 7500
-                              2: Text('3'), // 10000
-                              3: Text('4'), // 12500
-                              4: Text('5'), // 15000
-                              5: Text('6'), // 20000
+                              0: Text('1'), // 2500
+                              1: Text('2'), // 5000
+                              2: Text('3'), // 7500
+                              3: Text('4'), // 10000
+                              4: Text('5'), // 12500
+                              5: Text('6'), // 15000
+                              6: Text('7'), // 17500
+                              7: Text('8'), // 20000
                             },
                             groupValue: _selectedIndex,
                             onValueChanged: (value) {

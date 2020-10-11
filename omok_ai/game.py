@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from renju_rule import Renju_Rule
-from IPython.display import clear_output
+# from IPython.display import clear_output
 import os
 
 class Board(object):
@@ -122,7 +122,7 @@ class Game(object):
         width = board.width
         height = board.height
 
-        clear_output(wait=True)
+        # clear_output(wait=True)
         os.system('cls')
         
         print()

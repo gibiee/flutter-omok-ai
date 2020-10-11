@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, jsonify, request
 # from flask_ngrok import run_with_ngrok
 
@@ -12,14 +13,21 @@ import numpy as np
 app = Flask(__name__)
 # run_with_ngrok(app)
 
+@app.errorhandler(500)
+def server_error(e):
+    logging.exception('An error occurred during a request.')
+    return """
+    An internal error occurred: <pre>{}</pre>
+    See logs for full stacktrace.
+    """.format(e), 500
+
 @app.route('/gameSet', methods=['POST'])
 def receive_gameSet() :
     global n, width, height, hard, order, board, game, mcts_player, human
 
     n = 5
     width, height = 9, 9
-    # 5000
-    hards = [2500, 7500, 10000, 12500, 15000, 20000]
+    hards = [2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
     hard = hards[request.get_json()['hard']]
     order = request.get_json()['player_is_black']
     if order == True : order = 0
@@ -90,5 +98,5 @@ def player_moved():
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
     # app.run() # run_with_ngrok
