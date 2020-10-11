@@ -13,6 +13,7 @@ List forbidden = [];
 List<dynamic> prev_moved = [-1, -1];
 int hard = 2;
 bool player_is_black = true;
+bool wait = false;
 
 String url = 'http://omok-ai-9x9.df.r.appspot.com';
 
@@ -183,7 +184,7 @@ class HomeState extends State<Home> {
                         width: _size * 0.07,
                         height: _size * 0.07,
                         child: Opacity(
-                          opacity: 0.5,
+                          opacity: 0,
                           child: FlatButton(
                             onPressed: () async {
                               if (gameStart) {
@@ -194,7 +195,8 @@ class HomeState extends State<Home> {
                                   scaffoldKey.currentState.showSnackBar(
                                       SnackBar(
                                           content: Text('그곳에는 돌을 놓을 수 없습니다')));
-                                } else {
+                                } else if (wait == false) {
+                                  wait = true;
                                   // 플레이어가 돌을 둔 것을 렌더링
                                   setState(() {
                                     if (player_is_black) {
@@ -219,7 +221,7 @@ class HomeState extends State<Home> {
                                     ),
                                   );
 
-                                  print(response.body);
+                                  // print(response.body);
 
                                   // 서버로부터 AI가 데이터를 받습니다.
                                   // 1. AI가 둘 위치
@@ -228,7 +230,7 @@ class HomeState extends State<Home> {
                                   var data = json.decode(response.body)
                                       as Map<String, dynamic>;
 
-                                  print(data);
+                                  // print(data);
 
                                   // AI가 돌을 둔 것을 렌더링
                                   setState(() {
@@ -254,6 +256,7 @@ class HomeState extends State<Home> {
                                             content: Text('인공지능이 이겼습니다!')));
                                     gameStart = false;
                                   }
+                                  wait = false;
                                 }
                               } else {
                                 scaffoldKey.currentState.showSnackBar(SnackBar(
