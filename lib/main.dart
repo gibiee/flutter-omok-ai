@@ -15,7 +15,7 @@ int hard = 2;
 bool player_is_black = true;
 bool wait = false;
 
-String url = 'http://omok-ai-9x9.df.r.appspot.com';
+String url = 'https://aesthetic-abbey-292511.df.r.appspot.com';
 
 void main() => runApp(MyApp());
 
