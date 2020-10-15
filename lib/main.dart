@@ -17,7 +17,7 @@ bool wait = false;
 
 dynamic states_loc = null;
 
-String url = 'https://aesthetic-abbey-292511.df.r.appspot.com';
+String url = 'http://aesthetic-abbey-292511.df.r.appspot.com';
 
 void main() => runApp(MyApp());
 

@@ -26,12 +26,15 @@ def receive_gameSet() :
     receive_data = request.get_json()
     print(receive_data)
 
-    hard_idx = receive_data['hard_idx']
-
     board = Board(width=9, height=9, n_in_row=5)
     board.init_board(1)
 
-    mcts_player = mcts_players[hard_idx]
+    hard_idx = receive_data['hard_idx']
+    hards = [2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
+    model_file = f'./model/policy_9_{hards[hard_idx]}.model'
+    policy_param = pickle.load(open(model_file, 'rb'), encoding='bytes')
+    best_policy = PolicyValueNetNumpy(9, 9, policy_param)
+    mcts_player = MCTSPlayer(best_policy.policy_value_fn, c_puct=5, n_playout=400)
 
     # AI가 先인 경우, 1번 먼저 돌을 둔다.
     ai_move = mcts_player.get_action(board)
@@ -48,9 +51,6 @@ def player_moved():
     receive_data = request.get_json()
     print(receive_data)
     
-    # 난이도에 해당하는 player 불러옴.
-    hard_idx = receive_data['hard_idx']
-
     board = Board(width=9, height=9, n_in_row=5)
     board.init_board(0)
     
@@ -78,7 +78,13 @@ def player_moved():
         return jsonify(data)
 
     # AI가 둘 위치를 보낸다.
-    mcts_player = mcts_players[hard_idx]
+    # 난이도에 해당하는 player 불러옴.
+    hard_idx = receive_data['hard_idx']
+    hards = [2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
+    model_file = f'./model/policy_9_{hards[hard_idx]}.model'
+    policy_param = pickle.load(open(model_file, 'rb'), encoding='bytes')
+    best_policy = PolicyValueNetNumpy(9, 9, policy_param)
+    mcts_player = MCTSPlayer(best_policy.policy_value_fn, c_puct=5, n_playout=400)
 
     ai_move = mcts_player.get_action(board)
     ai_loc = board.move_to_location(ai_move)
@@ -98,17 +104,5 @@ def player_moved():
     return jsonify(data)
 
 if __name__ == '__main__':
-    n = 5
-    width, height = 9, 9
-    hards = [2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
-    mcts_players = []
-    for hard in hards :
-        model_file = f'./model/policy_9_{hard}.model'
-        policy_param = pickle.load(open(model_file, 'rb'), encoding='bytes')
-        best_policy = PolicyValueNetNumpy(width, height, policy_param)
-    
-        mcts_player = MCTSPlayer(best_policy.policy_value_fn, c_puct=5, n_playout=400)
-        mcts_players.append(mcts_player)
-
     app.run(host='127.0.0.1', port=8080, debug=True)
     # app.run() # run_with_ngrok
