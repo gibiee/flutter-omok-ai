@@ -28,7 +28,7 @@ def receive_gameSet() :
 
     hard_idx = receive_data['hard_idx']
 
-    board = Board(width=width, height=height, n_in_row=n)
+    board = Board(width=9, height=9, n_in_row=5)
     board.init_board(1)
 
     mcts_player = mcts_players[hard_idx]
@@ -51,7 +51,7 @@ def player_moved():
     # 난이도에 해당하는 player 불러옴.
     hard_idx = receive_data['hard_idx']
 
-    board = Board(width=width, height=height, n_in_row=n)
+    board = Board(width=9, height=9, n_in_row=5)
     board.init_board(0)
     
     states_loc = receive_data['states_loc']
@@ -110,5 +110,5 @@ if __name__ == '__main__':
         mcts_player = MCTSPlayer(best_policy.policy_value_fn, c_puct=5, n_playout=400)
         mcts_players.append(mcts_player)
 
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
     # app.run() # run_with_ngrok
