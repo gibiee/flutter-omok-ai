@@ -11,9 +11,11 @@ List black_moved = [];
 List white_moved = [];
 List forbidden = [];
 List<dynamic> prev_moved = [-1, -1];
-int hard = 2;
+int hard_idx = 2;
 bool player_is_black = true;
 bool wait = false;
+
+dynamic states_loc = null;
 
 String url = 'https://aesthetic-abbey-292511.df.r.appspot.com';
 
@@ -218,7 +220,9 @@ class HomeState extends State<Home> {
                                       },
                                       body: jsonEncode(
                                         {
-                                          'player_moved': [i, j]
+                                          'hard_idx': hard_idx,
+                                          'player_moved': [i, j],
+                                          'states_loc': states_loc,
                                         },
                                       ),
                                     );
@@ -245,6 +249,7 @@ class HomeState extends State<Home> {
                                         prev_moved = data['ai_moved'];
                                       }
                                       forbidden = data['forbidden'];
+                                      states_loc = data['states_loc'];
                                     });
 
                                     if (data['message'] == 1) {
@@ -375,7 +380,7 @@ class HomeState extends State<Home> {
                   child: Text("확인"),
                   onPressed: () async {
                     Navigator.pop(context);
-                    hard = _selectedIndex;
+                    hard_idx = _selectedIndex;
                     player_is_black = _attackFirst;
                     wait = player_is_black ? false : true;
                     gameStart = true;
@@ -384,25 +389,28 @@ class HomeState extends State<Home> {
                     white_moved = [];
                     forbidden = [];
                     prev_moved = [-1, -1];
-
-                    var response = await http.post(
-                      url + '/gameSet',
-                      headers: {
-                        "Content-Type": "application/json; charset=UTF-8"
-                      },
-                      body: jsonEncode(
-                        {'hard': hard, 'player_is_black': player_is_black},
-                      ),
-                    );
+                    states_loc = null;
 
                     if (player_is_black == false) {
+                      var response = await http.post(
+                        url + '/ai_first_moved',
+                        headers: {
+                          "Content-Type": "application/json; charset=UTF-8"
+                        },
+                        body: jsonEncode(
+                          {
+                            'hard_idx': hard_idx,
+                          },
+                        ),
+                      );
                       var data =
                           json.decode(response.body) as Map<String, dynamic>;
-                      if (data['ai_moved'] != null) {
-                        black_moved.add(data['ai_moved']);
-                      }
-                      forbidden = data['forbidden'];
+
+                      print(data);
+
+                      black_moved.add(data['ai_moved']);
                       prev_moved = data['ai_moved'];
+                      states_loc = data['states_loc'];
                       wait = false;
                     }
                     super.setState(() {});

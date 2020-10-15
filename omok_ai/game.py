@@ -19,6 +19,13 @@ class Board(object):
         self.states, self.states_loc = {}, [[0] * self.width for _ in range(self.height)]
         self.forbidden_locations, self.forbidden_moves = [], []
 
+    def states_loc_to_states(self) :
+        for y in range(self.height) :
+            for x in range(self.width) :
+                if self.states_loc[y][x] != 0 :
+                    move = self.location_to_move([y,x])
+                    self.states[move] = self.states_loc[y][x]
+
     def move_to_location(self, move):
         """ 3*3 보드를 예로 들면 : move 5 는 좌표 (1,2)를 의미한다.""" # ex) 0 1 2
         h = move // self.width                                      #     3 4 5
