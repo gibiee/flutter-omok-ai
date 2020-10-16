@@ -1,16 +1,19 @@
-# omok_9x9
+# 9x9 오목 인공지능 어플리케이션
 
-A new Flutter project.
+## 프로젝트 소개
+Flutter로 개발한 9x9 오목 인공지능 어플리케이션입니다.
 
-## Getting Started
+현재 Google Play Store에 출시 준비 중입니다.
+  
+<img src="https://user-images.githubusercontent.com/37574274/96249389-125f5900-0fe8-11eb-96a8-20cb772074af.png" width="200" height="400" />　<img src="https://user-images.githubusercontent.com/37574274/96249387-11c6c280-0fe8-11eb-8b3d-79194ff8f65e.png" width="200" height="400" />　<img src="https://user-images.githubusercontent.com/37574274/96249756-9e718080-0fe8-11eb-87fc-3042a8e72f0c.gif" width="200" height="400" />
 
-This project is a starting point for a Flutter application.
+## 기술 스택
+- Flutter
+- Python3
+- Flask(in Google Compute Engine)
 
-A few resources to get you started if this is your first Flutter project:
+## 오목 인공지능의 구현
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+딥러닝과 강화학습을 활용하여 동작합니다. 이전에 구현했던 코드를 조금 변형하여 사용하였습니다.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+코드 및 이론적인 참고사항은 [링크](https://github.com/gibiee/omok_AI)를 참고하시길 바랍니다.
