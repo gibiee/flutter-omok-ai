@@ -4,7 +4,8 @@
 Flutter로 개발한 9x9 오목 인공지능 어플리케이션입니다.
   
 <img src="https://user-images.githubusercontent.com/37574274/96249389-125f5900-0fe8-11eb-96a8-20cb772074af.png" width="200" height="400" />　<img src="https://user-images.githubusercontent.com/37574274/96249387-11c6c280-0fe8-11eb-8b3d-79194ff8f65e.png" width="200" height="400" />　<img src="https://user-images.githubusercontent.com/37574274/96277263-fa4f0000-100e-11eb-8cbf-2dd244f99b1f.gif" width="200" height="400" />
-  
+
+<br/>
 현재 Google Play Store에서 설치할 수 있습니다.
 
 <img src="https://user-images.githubusercontent.com/37574274/97299230-ff763f80-1897-11eb-8f42-745a40113915.png" width="70%" height="70%" />
